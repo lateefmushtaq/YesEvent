@@ -1,17 +1,15 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useContext, useState } from "react";
-import AuthContext from "./AuthProvider";
-import axios from "axios";
+import { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import "./Profile";
+import { Link as FooterLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUserPlus,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 
-import "./App.css";
 import {
   Button as BootstrapButton,
   Form as BootstrapForm,
@@ -20,6 +18,21 @@ import {
   Col,
 } from "react-bootstrap";
 import MyAlert from "./Alerts";
+const iconError = (
+  <FontAwesomeIcon
+    icon={faTriangleExclamation}
+    style={{ marginRight: "8px" }}
+  />
+);
+const Link = styled(FooterLink)`
+  color: #508d4e;
+  text-decoration: underline;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+`;
+
 const Form = styled(BootstrapForm)`
   margin: 20px;
 
@@ -74,13 +87,14 @@ const Heading1 = styled.h1`
 `;
 
 function MyForm() {
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-  const LOGIN_URL = "https://api.eventyay.com/v1/auth/login";
-  const { setAuth } = useContext(AuthContext);
+  const [error, setError] = useState(false);
   const schema = yup.object().shape({
     email: yup.string().email().required(),
     password: yup.string().min(4).max(18).required(),
+    passwordRepeat: yup
+      .string()
+      .oneOf([yup.ref("password"), null], "Passwords must match")
+      .required("Please confirm your password"),
   });
   const {
     register,
@@ -88,43 +102,23 @@ function MyForm() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  async function login(data) {
-    try {
-      const response = await axios.post(
-        LOGIN_URL,
-        {
-          email: data.email,
-          password: data.password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.data) {
-        const token = response.data.access_token;
-        localStorage.setItem("Token", token);
-        setAuth({ token });
-        navigate("/profile");
-      }
-    } catch (error) {
-      const myError = error.response.status;
-      setError(myError);
-    }
-  }
   function onSubmit(data) {
-    login(data);
+    data ? setError(true) : setError(false);
   }
-  const icon = <FontAwesomeIcon icon={faRightToBracket} />;
+  const icon = <FontAwesomeIcon icon={faUserPlus} />;
   return (
     <Container>
-      {error === 401 ? <MyAlert Message={"Invalid Credentials"} /> : null}
+      {error ? (
+        <MyAlert
+          Message={`User Already exists. Please Login `}
+          icon={iconError}
+        />
+      ) : null}
 
       <Row>
         <Col xs={12}>
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <Heading1> {icon} Login</Heading1>
+            <Heading1> {icon} Signup</Heading1>
             <Form.Group className="mb-3">
               <Form.Label> Email address</Form.Label>
 
@@ -140,18 +134,28 @@ function MyForm() {
 
               <Form.Control
                 type="password"
-                placeholder="password"
+                placeholder="Password"
                 {...register("password")}
               />
               <Form.Text id="error">{errors.password?.message}</Form.Text>
             </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label> Password</Form.Label>
+
+              <Form.Control
+                type="password"
+                placeholder=" Repeat Password"
+                {...register("passwordRepeat")}
+              />
+              <Form.Text id="error">{errors.passwordRepeat?.message}</Form.Text>
+            </Form.Group>
             <Button variant="primary" type="submit">
-              {icon} Submit
+              {icon} Register
             </Button>
+            <Link to="/login">Login</Link>
           </Form>
         </Col>
       </Row>
-      <Link to="/register">Create a New Account</Link>
     </Container>
   );
 }

@@ -1,16 +1,17 @@
 import { useForm } from "react-hook-form";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link as FooterLink } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import AuthContext from "./AuthProvider";
 import axios from "axios";
 import styled from "styled-components";
-import "./Profile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
-
-import "./App.css";
+import {
+  faRightToBracket,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import {
   Button as BootstrapButton,
   Form as BootstrapForm,
@@ -19,6 +20,7 @@ import {
   Col,
 } from "react-bootstrap";
 import MyAlert from "./Alerts";
+
 const Form = styled(BootstrapForm)`
   margin: 20px;
 
@@ -35,7 +37,14 @@ const Form = styled(BootstrapForm)`
     margin-left: 10px;
   }
 `;
-
+const Link = styled(FooterLink)`
+  color: #508d4e;
+  text-decoration: underline;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+`;
 const Button = styled(BootstrapButton)`
   background-color: #80af81;
   border: none;
@@ -73,17 +82,29 @@ const Heading1 = styled.h1`
 `;
 
 function MyForm() {
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  useEffect(() => {
+    const token = localStorage.getItem("Token");
+    if (token) {
+      navigate("/profile");
+    }
+  }, [navigate]);
+  const iconError = (
+    <FontAwesomeIcon
+      icon={faTriangleExclamation}
+      style={{ marginRight: "8px" }}
+    />
+  );
   const LOGIN_URL = "https://api.eventyay.com/v1/auth/login";
   const { setAuth } = useContext(AuthContext);
   const schema = yup.object().shape({
-    email: yup.string().email().required(),
+    email: yup.string().email().required("Email is Required"),
     password: yup.string().min(4).max(18).required(),
-    passwordRepeat: yup
-      .string()
-      .oneOf([yup.ref("password"), null], "Passwords must match")
-      .required("Please confirm your password"),
   });
   const {
     register,
@@ -98,7 +119,6 @@ function MyForm() {
         {
           email: data.email,
           password: data.password,
-          passwordRepeat: data.passwordRepeat,
         },
         {
           headers: {
@@ -120,15 +140,17 @@ function MyForm() {
   function onSubmit(data) {
     login(data);
   }
-  const icon = <FontAwesomeIcon icon={faUserPlus} />;
+  const icon = <FontAwesomeIcon icon={faRightToBracket} />;
   return (
     <Container>
-      {error === 401 ? <MyAlert Message={"Invalid Credentials"} /> : null}
+      {error === 401 ? (
+        <MyAlert Message={"Invalid Credentials"} icon={iconError} />
+      ) : null}
 
       <Row>
         <Col xs={12}>
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <Heading1> {icon} Signup</Heading1>
+            <Heading1> {icon} Login</Heading1>
             <Form.Group className="mb-3">
               <Form.Label> Email address</Form.Label>
 
@@ -141,30 +163,37 @@ function MyForm() {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label> Password</Form.Label>
-
-              <Form.Control
-                type="password"
-                placeholder="password"
-                {...register("password")}
-              />
+              <div style={{ position: "relative" }}>
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  {...register("password")}
+                />
+                <div
+                  onClick={togglePasswordVisibility}
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                  }}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </div>
+              </div>
               <Form.Text id="error">{errors.password?.message}</Form.Text>
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label> Password</Form.Label>
 
-              <Form.Control
-                type="password"
-                placeholder="password"
-                {...register("passwordRepeat")}
-              />
-              <Form.Text id="error">{errors.passwordRepeat?.message}</Form.Text>
-            </Form.Group>
             <Button variant="primary" type="submit">
-              {icon} Register
+              {icon} Submit
             </Button>
           </Form>
+          <Col style={{ textAlign: "center" }}>
+            {" "}
+            <Link to="/register">Create a New Account</Link>
+          </Col>
         </Col>
-        <Link to="/">Login</Link>
       </Row>
     </Container>
   );
