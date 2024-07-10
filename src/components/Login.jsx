@@ -45,12 +45,11 @@ const Link = styled(FooterLink)`
   text-align: center;
   margin-top: 1rem;
 `;
-const Button = styled(BootstrapButton)`
+export const Button = styled(BootstrapButton)`
   background-color: #80af81;
   border: none;
   width: 100%;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
+
   color: white;
   display: flex;
   justify-content: center;
@@ -91,7 +90,7 @@ function MyForm() {
   useEffect(() => {
     const token = localStorage.getItem("Token");
     if (token) {
-      navigate("/profile");
+      navigate("/dashboard");
     }
   }, [navigate]);
   const iconError = (
@@ -130,7 +129,7 @@ function MyForm() {
         const token = response.data.access_token;
         localStorage.setItem("Token", token);
         setAuth({ token });
-        navigate("/profile");
+        navigate("/dashboard");
       }
     } catch (error) {
       const myError = error.response.status;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
-const Profile = () => {
+import { Button } from "./Login";
+const Logout = () => {
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -11,11 +11,9 @@ const Profile = () => {
 
   return (
     <div>
-      <h1>Profile Page</h1>
-      <p>Welcome to your profile!</p>
-      <button onClick={handleLogout}>Logout</button>
+      <Button onClick={handleLogout}>Logout</Button>
     </div>
   );
 };
 
-export default Profile;
+export default Logout;

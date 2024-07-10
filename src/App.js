@@ -1,13 +1,14 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { AuthProvider } from './AuthProvider';
-import Login from './Login';
-import Profile from './Profile';
+import { AuthProvider } from './components/AuthProvider';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 import { Route, Routes } from 'react-router-dom';
-import PrivateRoute from './PrivateRoute';
-import Register from './Register'
-import Home from './Home';
-import NavBar from './Navbar';
+import PrivateRoute from './components/PrivateRoute';
+import Register from './components/Register'
+import Home from './components/Home';
+import NavBar from './components/Navbar';
+import CreateEvent from './components/CreateEvent';
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+        <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+        <Route path="/createEvent" element={<PrivateRoute element={<CreateEvent />} />} />
       </Routes>
 
     </AuthProvider >

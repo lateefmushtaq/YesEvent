@@ -1,7 +1,5 @@
 import Alert from "react-bootstrap/Alert";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 const StyledAlert = styled(Alert)`
   background-color: #ee4e4e;
   border-color: #f5c6cb;
