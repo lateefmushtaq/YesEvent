@@ -3,7 +3,7 @@ import { useNavigate, Link as FooterLink } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useContext, useState, useEffect } from "react";
-import AuthContext from "./AuthProvider";
+import AuthContext from "./contextProvider/AuthProvider";
 import axios from "axios";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

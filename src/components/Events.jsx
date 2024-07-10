@@ -1,16 +1,24 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-
+import { useContext } from "react";
+import AuthContext from "./contextProvider/AuthProvider";
 function Events() {
+  const { eventData } = useContext(AuthContext);
+
   return (
-    <Card style={{ width: "18rem" }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
-      <Card.Body>
-        <Card.Title>Event Title</Card.Title>
-        <Card.Text>Body</Card.Text>
-        <Button variant="primary">I am Still doing nothing</Button>
-      </Card.Body>
-    </Card>
+    <>
+      {" "}
+      {eventData.map((e) => (
+        <Card key={e.id} style={{ width: "18rem" }}>
+          <Card.Img variant="top" src="holder.js/100px180" />
+          <Card.Body>
+            <Card.Title>{e.name}</Card.Title>
+
+            <Button variant="primary">button</Button>
+          </Card.Body>
+        </Card>
+      ))}
+    </>
   );
 }
 

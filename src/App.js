@@ -1,6 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { AuthProvider } from './components/AuthProvider';
+import { AuthProvider } from './components/contextProvider/AuthProvider';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import { Route, Routes } from 'react-router-dom';

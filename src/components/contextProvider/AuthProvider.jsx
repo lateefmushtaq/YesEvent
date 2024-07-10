@@ -4,7 +4,9 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(null);
+  const [eventData, setEventData] = useState([]);
 
+  console.log("i am testing", eventData);
   useEffect(() => {
     const token = localStorage.getItem("Token");
     if (token) {
@@ -15,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, eventData, setEventData }}>
       {children}
     </AuthContext.Provider>
   );

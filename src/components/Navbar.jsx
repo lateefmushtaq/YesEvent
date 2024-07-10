@@ -17,10 +17,10 @@ const Form = styled(BootstrapForm)`
 
 function NavBar() {
   const token = localStorage.getItem("Token");
-  const navigate = useNavigate();
-  useEffect(() => {
-    !token && navigate("/login");
-  });
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   !token && navigate("/login");
+  // }, [token, navigate]);
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -46,14 +46,7 @@ function NavBar() {
           </Form>
         </Navbar.Collapse>
       </Container>
-      <Nav.Link>
-        {" "}
-        {token && (
-          <Nav.Link>
-            <Logout />
-          </Nav.Link>
-        )}
-      </Nav.Link>
+      <Nav.Link> {token && <Logout />}</Nav.Link>
     </Navbar>
   );
 }
