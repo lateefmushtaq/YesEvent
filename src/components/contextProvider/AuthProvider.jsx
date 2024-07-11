@@ -4,9 +4,15 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(null);
-  const [eventData, setEventData] = useState([]);
+  const [eventData, setEventData] = useState(() => {
+    const storedEventData = localStorage.getItem("cards");
+    return storedEventData ? JSON.parse(storedEventData) : [];
+  });
 
-  console.log("i am testing", eventData);
+  useEffect(() => {
+    localStorage.setItem("cards", JSON.stringify(eventData));
+  }, [eventData]);
+
   useEffect(() => {
     const token = localStorage.getItem("Token");
     if (token) {

@@ -1,10 +1,13 @@
 import React from "react";
+
+import Events from "./events/Events";
+
 import { Link } from "react-router-dom";
 function Home() {
   return (
     <div>
-      I am home !!
-      <Link to="./login">Login here</Link>
+      <Link to={"/dashboard"}>Dashboard</Link>
+      <Events />
     </div>
   );
 }

@@ -8,8 +8,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Register from './components/Register'
 import Home from './components/Home';
 import NavBar from './components/Navbar';
-import CreateEvent from './components/CreateEvent';
-
+import CreateEvent from './components/events/CreateEvent';
+import OtherDetails from './components/events/OtherDetails';
 function App() {
   return (
     <AuthProvider>
@@ -22,6 +22,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
         <Route path="/createEvent" element={<PrivateRoute element={<CreateEvent />} />} />
+        <Route path="/otherDetails" element={<PrivateRoute element={<OtherDetails />} />} />
       </Routes>
 
     </AuthProvider >

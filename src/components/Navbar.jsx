@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-
+import MyButton from "./buttons/CreateEventButton";
 import { Form as BootstrapForm, Container, Navbar, Nav } from "react-bootstrap";
-import { Button } from "./Login";
 import Logout from "./Logout";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Form = styled(BootstrapForm)`
   .form-control {
@@ -16,11 +15,12 @@ const Form = styled(BootstrapForm)`
 `;
 
 function NavBar() {
+  const [login, setLogin] = useState("");
   const token = localStorage.getItem("Token");
-  // const navigate = useNavigate();
-  // useEffect(() => {
-  //   !token && navigate("/login");
-  // }, [token, navigate]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    setLogin(token);
+  }, [token, navigate]);
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -42,11 +42,19 @@ function NavBar() {
               className="me-1"
               aria-label="Search"
             />
-            <Button variant="outline-success">Search Events</Button>
+            <MyButton width="100%" variant="outline-success">
+              Search Events
+            </MyButton>
           </Form>
+          {login ? (
+            <Nav.Link>
+              <Logout />
+            </Nav.Link>
+          ) : (
+            <Link to="./login">Login</Link>
+          )}
         </Navbar.Collapse>
       </Container>
-      <Nav.Link> {token && <Logout />}</Nav.Link>
     </Navbar>
   );
 }

@@ -6,6 +6,7 @@ import { useContext, useState, useEffect } from "react";
 import AuthContext from "./contextProvider/AuthProvider";
 import axios from "axios";
 import styled from "styled-components";
+import { Button } from "./buttons/CreateEventButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faRightToBracket,
@@ -13,7 +14,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import {
-  Button as BootstrapButton,
   Form as BootstrapForm,
   Container as BootstrapContainer,
   Row,
@@ -45,25 +45,7 @@ const Link = styled(FooterLink)`
   text-align: center;
   margin-top: 1rem;
 `;
-export const Button = styled(BootstrapButton)`
-  background-color: #80af81;
-  border: none;
-  width: 100%;
 
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-
-  &:hover {
-    background: #508d4e;
-  }
-  &:active,
-  &:focus {
-    background: #508d4e !important;
-  }
-`;
 const Container = styled(BootstrapContainer)`
   background-color: #d6efd8;
   margin-top: 2rem;
@@ -184,9 +166,7 @@ function MyForm() {
               <Form.Text id="error">{errors.password?.message}</Form.Text>
             </Form.Group>
 
-            <Button variant="primary" type="submit">
-              {icon} Submit
-            </Button>
+            <Button type="submit"> {icon} Submit</Button>
           </Form>
           <Col style={{ textAlign: "center" }}>
             {" "}
