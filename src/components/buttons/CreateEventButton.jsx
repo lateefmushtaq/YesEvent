@@ -14,7 +14,7 @@ export const Button = styled(BootstrapButton)`
 
   &:hover {
     background-color: ${(props) => props.coloronhover};
-    color: ${(props) => props.backgroundColor};
+    color: ${(props) => props.backgroundcolor};
     border: 2px solid ${(props) => props.color};
   }
   &:active,
@@ -26,21 +26,23 @@ export const Button = styled(BootstrapButton)`
 
 function MyButton({
   children,
-  handleClick,
+  handleclick,
   backgroundcolor,
-  borderColor,
+  bordercolor,
   coloronhover,
   color,
   width,
+  type = "button",
 }) {
   return (
     <Button
-      backgroundcolor={backgroundcolor}
-      borderColor={borderColor}
-      coloronhover={coloronhover}
-      onClick={handleClick}
+      bordercolor={bordercolor}
       color={color}
       width={width}
+      coloronhover={coloronhover}
+      backgroundcolor={backgroundcolor}
+      onClick={handleclick}
+      type={type}
     >
       {children}
     </Button>

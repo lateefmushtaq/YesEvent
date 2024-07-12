@@ -1,7 +1,5 @@
 import React from "react";
-
 import Events from "./events/Events";
-
 import { Link } from "react-router-dom";
 function Home() {
   return (

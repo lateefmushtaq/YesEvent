@@ -22,7 +22,7 @@ function Dashboard() {
             coloronhover="#508d4e"
             backgroundcolor="#80af81"
             color="#fff"
-            handleClick={eventButton}
+            handleclick={eventButton}
             width="300px"
           >
             {" "}

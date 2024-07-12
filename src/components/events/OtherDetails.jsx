@@ -21,7 +21,6 @@ function OtherDetails() {
   } = useForm({ resolver: yupResolver(schema) });
 
   function onSubmit(data) {
-    console.log(data);
     navigate("/dashboard");
   }
 

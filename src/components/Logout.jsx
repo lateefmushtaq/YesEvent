@@ -18,7 +18,7 @@ const Logout = () => {
         coloronhover="#ee4e4e"
         backgroundcolor="#fff"
         color="#ee4e4e"
-        handleClick={handleLogout}
+        handleclick={handleLogout}
       >
         <FontAwesomeIcon icon={faArrowRightFromBracket} /> Logout
       </MyButton>

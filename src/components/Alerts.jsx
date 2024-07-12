@@ -1,19 +1,34 @@
 import Alert from "react-bootstrap/Alert";
 import styled from "styled-components";
 const StyledAlert = styled(Alert)`
-  background-color: #ee4e4e;
-  border-color: #f5c6cb;
-  color: #fff;
+  background-color: ${(props) => props.backgroundcolor};
+  border: 2px solid ${(props) => props.border};
+  color: ${(props) => props.color};
   padding: 10px;
-  margin: 10px 0;
+  margin: ${(props) => props.margin};
   text-align: center;
+  border-radius: ${(props) => props.radius};
+  margin: ${(props) => props.margin};
 `;
 
-function MyAlert({ Message, icon }) {
+function MyAlert({
+  Message,
+  icon,
+  backgroundcolor,
+  color,
+  border,
+  margin,
+  radius,
+}) {
   return (
     <>
-      <StyledAlert variant="danger">
-        {" "}
+      <StyledAlert
+        backgroundcolor={backgroundcolor}
+        color={color}
+        border={border}
+        margin={margin}
+        radius={radius}
+      >
         {icon}
         {Message}
       </StyledAlert>

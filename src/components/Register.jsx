@@ -11,13 +11,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
-  Button as BootstrapButton,
   Form as BootstrapForm,
   Container as BootstrapContainer,
   Row,
   Col,
 } from "react-bootstrap";
 import MyAlert from "./Alerts";
+import MyButton from "./buttons/CreateEventButton";
 const iconError = (
   <FontAwesomeIcon
     icon={faTriangleExclamation}
@@ -50,26 +50,6 @@ const Form = styled(BootstrapForm)`
   }
 `;
 
-const Button = styled(BootstrapButton)`
-  background-color: #80af81;
-  border: none;
-  width: 100%;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-
-  &:hover {
-    background: #508d4e;
-  }
-  &:active,
-  &:focus {
-    background: #508d4e !important;
-  }
-`;
 const Container = styled(BootstrapContainer)`
   background-color: #d6efd8;
   margin-top: 2rem;
@@ -112,6 +92,9 @@ function MyForm() {
         <MyAlert
           Message={`User Already exists. Please Login `}
           icon={iconError}
+          backgroundcolor={"#ee4e4e"}
+          color={"#fff"}
+          border={"#f5c6cb"}
         />
       ) : null}
 
@@ -149,9 +132,9 @@ function MyForm() {
               />
               <Form.Text id="error">{errors.passwordRepeat?.message}</Form.Text>
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <MyButton variant="primary" type="submit">
               {icon} Register
-            </Button>
+            </MyButton>
             <Link to="/login">Login</Link>
           </Form>
         </Col>
