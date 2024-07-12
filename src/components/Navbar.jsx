@@ -42,10 +42,16 @@ function NavBar() {
               className="me-1"
               aria-label="Search"
             />
-            <MyButton width="100%" variant="outline-success">
+            <MyButton
+              width="250px"
+              variant="outline-success"
+              coloronhover="#1A5319"
+              margin="0px 10px 0 0"
+            >
               Search Events
             </MyButton>
           </Form>
+          <div className="vr" />
           {login ? (
             <Nav.Link>
               <Logout />

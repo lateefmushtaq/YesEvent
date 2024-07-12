@@ -19,6 +19,7 @@ function MyAlert({
   border,
   margin,
   radius,
+  variant,
 }) {
   return (
     <>
@@ -28,6 +29,7 @@ function MyAlert({
         border={border}
         margin={margin}
         radius={radius}
+        variant={variant}
       >
         {icon}
         {Message}

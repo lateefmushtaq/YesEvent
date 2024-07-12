@@ -14,14 +14,11 @@ const Logout = () => {
 
   return (
     <div>
-      <MyButton
-        coloronhover="#ee4e4e"
-        backgroundcolor="#fff"
-        color="#ee4e4e"
-        handleclick={handleLogout}
-      >
-        <FontAwesomeIcon icon={faArrowRightFromBracket} /> Logout
-      </MyButton>
+      <FontAwesomeIcon
+        icon={faArrowRightFromBracket}
+        onClick={handleLogout}
+        style={{ marginLeft: "12px", color: "#1A5319" }}
+      />
     </div>
   );
 };
