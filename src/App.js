@@ -10,6 +10,7 @@ import Home from './components/Home';
 import NavBar from './components/Navbar';
 import CreateEvent from './components/events/CreateEvent';
 import OtherDetails from './components/events/OtherDetails'
+import EventDetails from './components/events/EventDetails';
 function App() {
   return (
     <AuthProvider>
@@ -21,6 +22,7 @@ function App() {
         <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
         <Route path="/createEvent" element={<PrivateRoute element={<CreateEvent />} />} />
         <Route path="otherDetails" element={<OtherDetails />} />
+        <Route path="eventDetails" element={<EventDetails />} />
       </Routes>
     </AuthProvider >
   );

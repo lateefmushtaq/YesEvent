@@ -1,7 +1,6 @@
 import React from "react";
 import { Button as BootstrapButton } from "react-bootstrap";
 import styled from "styled-components";
-
 export const Button = styled(BootstrapButton)`
   background-color: ${(props) => props.backgroundcolor || "#80af81"};
   border: 2px solid ${(props) => props.bordercolor};

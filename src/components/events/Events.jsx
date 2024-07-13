@@ -5,8 +5,9 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "react-bootstrap";
-
+import ListGroup from "react-bootstrap/ListGroup";
+import img from "../assets/bg.webp";
+import { Link } from "react-router-dom";
 function Events() {
   const { eventData, setEventData } = useContext(AuthContext);
   const [animatingId, setAnimatingId] = useState(null);
@@ -30,33 +31,48 @@ function Events() {
             <Card.Img
               style={{ width: "100%", height: "200px", objectFit: "cover" }}
               variant="top"
-              src={item.fileData ? item.fileData.name : ""}
+              src={img}
             />
             <Card.Body>
               <Card.Title>{item.name}</Card.Title>
-              <p>{item.eventType}</p>
-              <p>{item.venueType}</p>
-              <p>{item.venueData}</p>
-              <p>{item.topic}</p>
+
+              <ListGroup className="list-group-flush">
+                <ListGroup.Item>
+                  {" "}
+                  <strong>Event Type:</strong> {item.eventType}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  {" "}
+                  <strong>Event Topic:</strong> {item.topic}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  {" "}
+                  <strong>Venue Type:</strong>
+                  {item.venueType}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  {" "}
+                  <strong>Venue Details:</strong>
+                  {item.venueData}
+                </ListGroup.Item>
+              </ListGroup>
+
               <Card.Text>{item.description}</Card.Text>
-              <Button
-                coloronhover="#80af81"
-                backgroundcolor="#fff"
-                color="#508d4e"
-              >
-                {" "}
-                Book
-              </Button>
-              <Button>
-                {" "}
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  style={{ color: "#ee4e4e", cursor: "pointer" }}
-                  onClick={() => handleDelete(item.id)}
-                  onMouseEnter={() => handleFocus(item.id)}
-                  beatFade={animatingId === item.id}
-                />
-              </Button>
+              <Card.Body>
+                <Card.Link as={Link} to={"/eventDetails"}>
+                  {" "}
+                  Event Details
+                </Card.Link>
+                <Card.Link>
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    style={{ color: "#ee4e4e", cursor: "pointer" }}
+                    onClick={() => handleDelete(item.id)}
+                    onMouseEnter={() => handleFocus(item.id)}
+                    beatFade={animatingId === item.id}
+                  />
+                </Card.Link>
+              </Card.Body>
             </Card.Body>
           </Card>
         </Col>
