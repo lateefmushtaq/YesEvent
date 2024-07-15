@@ -34,7 +34,7 @@ const Container = styled(BootstrapContainer)`
 `;
 const SytledContainer = styled(BootstrapContainer)`
   background-color: #e3f6e9;
-  margin: auto;
+  margin: 10px;
   padding: 8px 12px;
   border: 2px solid #1a5319;
   border-radius: 8px 8px 0px 0px;
@@ -90,7 +90,7 @@ const schema = yup.object().shape({
 
 function CreateEvent() {
   const [alert, setAlert] = useState(false);
-
+  const [error, setError] = useState(null);
   const {
     register,
     handleSubmit,
@@ -139,19 +139,17 @@ function CreateEvent() {
   async function createEvent(body) {
     try {
       let response = await axios.post(URL, body, config);
-      console.log("Event Created:", response.data);
-      setEventData((prevData) => [...prevData, response.data]);
+
+      setEventData((prevData) => [...prevData, response.data.data]);
     } catch (error) {
-      console.error(
-        "Failed to create event:",
-        error.response ? error.response.data : error.message
-      );
+      setError(error);
     }
   }
 
   function handleCancel() {
     navigate("/dashboard");
   }
+  if (error) return <div>{error}</div>;
   return (
     <>
       <SytledContainer>
