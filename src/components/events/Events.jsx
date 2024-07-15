@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 function Events() {
   const { eventData, setEventData } = useContext(AuthContext);
   const [animatingId, setAnimatingId] = useState(null);
+  console.log("Here", eventData);
 
   function handleDelete(id) {
     const updatedData = eventData.filter((item) => item.id !== id);
@@ -26,7 +27,7 @@ function Events() {
   return (
     <Row xs={1} md={3} className="g-4" style={{ marginTop: "20px" }}>
       {eventData.map((item) => (
-        <Col key={item.id}>
+        <Col key={item.data.id}>
           <Card style={{ width: "18rem", overflow: "hidden" }}>
             <Card.Img
               style={{ width: "100%", height: "200px", objectFit: "cover" }}
@@ -34,7 +35,7 @@ function Events() {
               src={img}
             />
             <Card.Body>
-              <Card.Title>{item.name}</Card.Title>
+              <Card.Title>{item.data.attributes.name}</Card.Title>
 
               <ListGroup className="list-group-flush">
                 <ListGroup.Item>
@@ -53,11 +54,11 @@ function Events() {
                 <ListGroup.Item>
                   {" "}
                   <strong>Venue Details:</strong>
-                  {item.venueData}
+                  {item.data.attributes["location-name"]}
                 </ListGroup.Item>
               </ListGroup>
 
-              <Card.Text>{item.description}</Card.Text>
+              <Card.Text>{item.data.attributes.description}</Card.Text>
               <Card.Body>
                 <Card.Link as={Link} to={"/eventDetails"}>
                   {" "}

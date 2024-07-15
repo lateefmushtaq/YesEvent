@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Alert from "react-bootstrap/Alert";
+import axios from "axios";
 import AuthContext from "../contextProvider/AuthProvider";
 import {
   Form,
@@ -97,43 +98,60 @@ function CreateEvent() {
   } = useForm({ resolver: yupResolver(schema) });
   const navigate = useNavigate();
   const { setEventData } = useContext(AuthContext);
-
+  const token = localStorage.getItem("Token");
+  const URL = `https://api.eventyay.com/v1/events`;
+  const config = {
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      Authorization: `JWT ${token}`,
+    },
+  };
   function onSubmit(data) {
-    const formData = {
-      id: new Date().toISOString(),
-      name: data.eventName,
-      eventType: data.eventType,
-      topic: data.eventTopic,
-      venueType: data.venueType,
-      venueData: data.venueData,
-      description: data.description,
-      Links: data.Links,
-      linkName: data.linkName,
-      startDate: data.startDate,
-      endDate: data.endDate,
-      specialRequirements: data.specialRequirements,
-      fileData: data.file[0]
-        ? {
-            name: URL.createObjectURL(data.file[0]),
-            type: data.file[0].type,
-            size: data.file[0].size,
-            lastModified: data.file[0].lastModified,
-          }
-        : null,
+    const body = {
+      data: {
+        type: "event",
+        attributes: {
+          name: data.eventName,
+          "starts-at": "2099-12-13T23:59:59.123456+00:00",
+          "ends-at": "2099-12-14T23:59:59.123456+00:00",
+          timezone: "UTC",
+          latitude: "1.23456789",
+          longitude: "1.23456789",
+          "location-name": data.venueData,
+          description: data.description,
+          "original-image-url":
+            "https://www.w3schools.com/html/pic_mountain.jpg",
+          "owner-name": "example",
+          privacy: "public",
+          state: "draft",
+          online: false,
+        },
+      },
     };
 
-    setEventData((prevData) => [...prevData, formData]);
+    createEvent(body);
     setAlert(true);
     setTimeout(() => {
       setAlert(false);
     }, 4500);
   }
 
+  async function createEvent(body) {
+    try {
+      let response = await axios.post(URL, body, config);
+      console.log("Event Created:", response.data);
+      setEventData((prevData) => [...prevData, response.data]);
+    } catch (error) {
+      console.error(
+        "Failed to create event:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  }
+
   function handleCancel() {
     navigate("/dashboard");
   }
-
-  // const done = <FontAwesomeIcon icon="fa-solid fa-circle-check" />;
   return (
     <>
       <SytledContainer>
