@@ -125,7 +125,7 @@ function MyForm() {
   return (
     <Container>
       {error === 401 ? (
-        <MyAlert Message={"Invalid Credentials"} icon={iconError} />
+        <MyAlert Message={error} icon={iconError} variant={"danger"} />
       ) : null}
 
       <Row>

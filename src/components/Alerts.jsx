@@ -1,40 +1,30 @@
 import Alert from "react-bootstrap/Alert";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 const StyledAlert = styled(Alert)`
-  background-color: ${(props) => props.backgroundcolor};
-  border: 2px solid ${(props) => props.border};
-  color: ${(props) => props.color};
-  padding: 10px;
-  margin: ${(props) => props.margin};
-  text-align: center;
-  border-radius: ${(props) => props.radius};
-  margin: ${(props) => props.margin};
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-function MyAlert({
-  Message,
-  icon,
-  backgroundcolor,
-  color,
-  border,
-  margin,
-  radius,
-  variant,
-}) {
+function MyAlert({ Message, icon, variant, timeout = 4000 }) {
+  const [isVisible, setIsVisible] = useState(true);
+  useEffect(() => {
+    if (isVisible) {
+      setTimeout(() => {
+        setIsVisible(false);
+      }, timeout);
+    }
+  }, [isVisible, timeout]);
+  if (!isVisible) {
+    return null;
+  }
   return (
-    <>
-      <StyledAlert
-        backgroundcolor={backgroundcolor}
-        color={color}
-        border={border}
-        margin={margin}
-        radius={radius}
-        variant={variant}
-      >
-        {icon}
-        {Message}
-      </StyledAlert>
-    </>
+    <StyledAlert variant={variant}>
+      {icon}
+      {Message}
+    </StyledAlert>
   );
 }
 

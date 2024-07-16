@@ -4,7 +4,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Card, Row } from "react-bootstrap";
 import MyButton from "./buttons/CreateEventButton";
 import { useNavigate } from "react-router-dom";
-import Events from "./events/Events";
+import MyEvents from "./events/MyEvents";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ function Dashboard() {
           </MyButton>
         </Row>
       </Card>
-      <Events />
+      <MyEvents />
     </>
   );
 }

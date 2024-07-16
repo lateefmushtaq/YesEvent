@@ -8,35 +8,11 @@ import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup";
 import img from "../assets/bg.webp";
 import { Link } from "react-router-dom";
-import axios from "axios";
+
 function Events() {
-  const { publicEvent, setPublicEvents } = useContext(AuthContext);
+  const { eventData, setEventData } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  async function getData() {
-    try {
-      const URL = `https://api.eventyay.com/v1/events`;
-      const token = localStorage.getItem("Token");
-      const config = {
-        headers: {
-          Accept: "application/vnd.api+json",
-          Authorization: `JWT ${token}`,
-        },
-      };
-      let response = await axios.get(URL, config);
 
-      let data = response.data.data;
-      setPublicEvents(data);
-
-      setLoading(false);
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-    }
-  }
-  useEffect(() => {
-    getData();
-  }, []);
   function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -45,7 +21,11 @@ function Events() {
       day: "numeric",
     });
   }
-
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
   if (loading)
     return (
       <div
@@ -65,67 +45,50 @@ function Events() {
         />
       </div>
     );
-  if (error)
-    return (
-      <div
-        style={{
-          display: "flex",
-          textAlign: "center",
-          justifyContent: "center",
-          height: "100vh",
-          alignItems: "center",
-        }}
-      >
-        {error}
-      </div>
-    );
+
   return (
-    <Row xs={1} md={3} style={{ margin: "20px", flexWrap: "wrap" }}>
-      {publicEvent &&
-        publicEvent.map((item) => (
+    <Row
+      xs={1}
+      md={3}
+      className="g-3"
+      style={{ margin: "20px", flexWrap: "wrap" }}
+    >
+      {eventData &&
+        eventData.map((item) => (
           <Col key={item.id}>
-            <Card style={{ width: "25rem", overflow: "hidden", margin: "8px" }}>
+            <Card style={{ width: "24rem", overflow: "hidden" }}>
               <Card.Img
                 style={{ width: "100%", height: "200px", objectFit: "cover" }}
                 variant="top"
-                src={
-                  item.attributes["large-image-url"]
-                    ? item.attributes["large-image-url"]
-                    : img
-                }
+                src={img}
               />
               <Card.Body>
                 <Card.Title>
-                  <span> {item.attributes.name}</span>
+                  <span> {item.name}</span>
                 </Card.Title>
 
                 <ListGroup className="list-group-flush">
-                  <ListGroup.Item>
-                    {formatDate(item.attributes["starts-at"])}
-                  </ListGroup.Item>
+                  <ListGroup.Item>{formatDate(item.date)}</ListGroup.Item>
                   <ListGroup.Item>
                     {" "}
                     <strong>Event ID: </strong>
+                    {item.id}{" "}
                   </ListGroup.Item>
 
-                  {item.attributes["location-name"] && (
-                    <ListGroup.Item>
-                      <strong>Venue: </strong>
-                      {item.attributes["location-name"]}
-                    </ListGroup.Item>
-                  )}
+                  <ListGroup.Item>
+                    <strong>Venue: </strong>
+                    {item.venue}
+                  </ListGroup.Item>
 
                   <ListGroup.Item>
                     {" "}
                     <strong>Timezone: </strong>
-                    {item.attributes.timezone}
+                    {item.description}
                   </ListGroup.Item>
 
                   <ListGroup.Item>
                     <strong>Event Owner: </strong>
-                    {item.attributes["owner-name"]
-                      ? item.attributes["owner-name"]
-                      : "Unknown"}
+                    {item.owner}
                   </ListGroup.Item>
                 </ListGroup>
 

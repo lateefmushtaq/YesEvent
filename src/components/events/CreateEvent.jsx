@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Alert from "react-bootstrap/Alert";
 import axios from "axios";
 import AuthContext from "../contextProvider/AuthProvider";
 import {
   Form,
+  Button,
   Row,
   Col,
   FloatingLabel,
@@ -34,7 +35,7 @@ const Container = styled(BootstrapContainer)`
 `;
 const SytledContainer = styled(BootstrapContainer)`
   background-color: #e3f6e9;
-  margin: 10px;
+  margin: auto;
   padding: 8px 12px;
   border: 2px solid #1a5319;
   border-radius: 8px 8px 0px 0px;
@@ -87,26 +88,30 @@ const StyledForm = styled(Form)`
 const schema = yup.object().shape({
   eventName: yup.string().required("Name is required"),
 });
-
-function CreateEvent() {
-  const [alert, setAlert] = useState(false);
-  const [error, setError] = useState(null);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
-  const navigate = useNavigate();
-  const { setEventData } = useContext(AuthContext);
+const URL = `https://api.eventyay.com/v1/events`;
+function getAuth() {
   const token = localStorage.getItem("Token");
-  const URL = `https://api.eventyay.com/v1/events`;
   const config = {
     headers: {
       "Content-Type": "application/vnd.api+json",
       Authorization: `JWT ${token}`,
     },
   };
-  function onSubmit(data) {
+  return config;
+}
+function CreateEvent() {
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm({ resolver: yupResolver(schema) });
+  const navigate = useNavigate();
+  const { setEventData } = useContext(AuthContext);
+
+  async function onSubmit(data) {
     const body = {
       data: {
         type: "event",
@@ -125,27 +130,37 @@ function CreateEvent() {
           privacy: "public",
           state: "draft",
           online: false,
+          published: true,
         },
       },
     };
 
-    createEvent(body);
-    setAlert(true);
-    setTimeout(() => {
-      setAlert(false);
-    }, 4500);
-  }
-
-  async function createEvent(body) {
     try {
-      let response = await axios.post(URL, body, config);
-
+      let response = await axios.post(URL, body, getAuth());
       setEventData((prevData) => [...prevData, response.data.data]);
+      setMessage("Event Sucessfully Created");
+      console.log(response.data.data);
     } catch (error) {
       setError(error);
     }
   }
 
+  function createDraft() {
+    const data = getValues();
+
+    if (data) {
+      const formData = {
+        id: Date.now(),
+        name: data.eventName,
+        eventTopic: data.eventTopic,
+        location: data.location,
+        venue: data.venueType,
+        description: data.description,
+      };
+      setEventData((pre) => [...pre, formData]);
+      console.log(formData.id);
+    }
+  }
   function handleCancel() {
     navigate("/dashboard");
   }
@@ -173,9 +188,9 @@ function CreateEvent() {
 
       <Container>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          {alert === true && (
+          {message !== "" && (
             <MyAlert
-              variant={"dark"}
+              variant={"success"}
               icon={
                 <FontAwesomeIcon
                   icon={faCircleCheck}
@@ -185,14 +200,14 @@ function CreateEvent() {
               }
               Message={
                 <span>
-                  Event Created Sucessfully{" "}
+                  {message}
                   <Alert.Link as={Link} to="/dashboard">
                     {" "}
                     Your Event
                   </Alert.Link>
                 </span>
               }
-              backgroundcolor={"#80af81"}
+              backgroundColor={"#80af81"}
               color={"#fff"}
               border={"#508d4e"}
               margin={"12px"}
@@ -262,8 +277,8 @@ function CreateEvent() {
               <StyledForm.Label>Venue</StyledForm.Label>
               <StyledForm.Control
                 placeholder="Online/Links/"
-                id="venueData"
-                {...register("venueData")}
+                id="location"
+                {...register("location")}
               />
             </StyledForm.Group>
             <StyledForm.Group as={Col} xs={12} md={4}>
@@ -313,6 +328,9 @@ function CreateEvent() {
             >
               Next
             </MyButton>
+            <Button variant="secondary" onClick={() => createDraft()}>
+              Create Draft
+            </Button>
 
             <MyButton
               variant="danger"
