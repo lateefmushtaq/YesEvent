@@ -8,7 +8,7 @@ const StyledAlert = styled(Alert)`
   justify-content: center;
 `;
 
-function MyAlert({ Message, icon, variant, timeout = 4000 }) {
+function MyAlert({ Message, icon, variant, timeout = 1000 }) {
   const [isVisible, setIsVisible] = useState(true);
   useEffect(() => {
     if (isVisible) {

@@ -9,6 +9,7 @@ import {
   Col,
   FloatingLabel,
   Container as BootstrapContainer,
+  Container,
 } from "react-bootstrap";
 import MyButton, { Button } from "../buttons/CreateEventButton";
 import { Link, Outlet, useNavigate } from "react-router-dom";
@@ -19,7 +20,7 @@ import MyAlert from "../Alerts";
 import { faCircleCheck, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
-const Container = styled(BootstrapContainer)`
+const StyledContainerMain = styled(BootstrapContainer)`
   background-color: #e3f6e9;
   margin: auto;
   padding: 8px 12px;
@@ -165,7 +166,7 @@ function CreateEvent() {
   }
 
   return (
-    <>
+    <Container>
       <SytledContainer>
         {" "}
         <Col
@@ -185,7 +186,7 @@ function CreateEvent() {
         </Col>
       </SytledContainer>
 
-      <Container>
+      <StyledContainerMain>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           {message !== "" && (
             <MyAlert
@@ -313,44 +314,38 @@ function CreateEvent() {
             </StyledFloatingLabel>
           </Row>
 
-          <Row
-            className="mb-3"
-            style={{ justifyContent: "end", margin: "auto", gap: "10px" }}
-          >
-            <Col>
-              {" "}
+          <Row className="justify-content-end mb-3">
+            <Col className="mb-4" xs={12} md="auto">
               <MyButton
                 variant="primary"
                 type="submit"
                 coloronhover="#1A5319"
                 backgroundcolor="#508d4e"
                 color="#f8f8f8"
-                width="150px"
+                width="100%"
                 bordercolor="#1A5319"
               >
                 Next
               </MyButton>
             </Col>
-            <Col>
-              {" "}
+            <Col className="mb-4" xs={12} md="auto">
               <Button
                 variant="warning"
                 onClick={() => createDraft()}
                 type="submit"
-                width="150px"
+                style={{ width: "100%" }}
               >
                 Create Draft
               </Button>
             </Col>
-            <Col>
-              {" "}
+            <Col className="mb-4" xs={12} md="auto">
               <MyButton
                 variant="danger"
                 type="button"
                 coloronhover="#900C3F"
                 backgroundcolor="#f8f8f8"
                 color="#900C3F"
-                width="100px"
+                width="100%"
                 bordercolor="#900C3F"
                 handleclick={handleCancel}
               >
@@ -360,8 +355,8 @@ function CreateEvent() {
           </Row>
           <Outlet />
         </StyledForm>
-      </Container>
-    </>
+      </StyledContainerMain>
+    </Container>
   );
 }
 
