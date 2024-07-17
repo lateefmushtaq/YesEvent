@@ -4,7 +4,7 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(null);
-  const [publicEvent, setPublicEvents] = useState(null);
+
   const [eventData, setEventData] = useState(() => {
     const storedEventData = localStorage.getItem("cards");
     return storedEventData ? JSON.parse(storedEventData) : [];
@@ -30,8 +30,6 @@ export const AuthProvider = ({ children }) => {
         setAuth,
         eventData,
         setEventData,
-        publicEvent,
-        setPublicEvents,
       }}
     >
       {children}

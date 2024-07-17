@@ -1,17 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Alert from "react-bootstrap/Alert";
 import axios from "axios";
 import AuthContext from "../contextProvider/AuthProvider";
 import {
   Form,
-  Button,
   Row,
   Col,
   FloatingLabel,
   Container as BootstrapContainer,
 } from "react-bootstrap";
-import MyButton from "../buttons/CreateEventButton";
+import MyButton, { Button } from "../buttons/CreateEventButton";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -26,11 +25,8 @@ const Container = styled(BootstrapContainer)`
   padding: 8px 12px;
   border: 2px solid #1a5319;
   border-radius: 0px 0px 8px 8px;
-  box-shadow: 0px 8px 0px #1a5319;
   &:hover {
-    border-color: #acd793;
-    box-shadow: 0px 8px 0px #acd793;
-    background-color: #e0fbe2;
+    box-shadow: 0px 12px 1px #1a5319;
   }
 `;
 const SytledContainer = styled(BootstrapContainer)`
@@ -41,11 +37,10 @@ const SytledContainer = styled(BootstrapContainer)`
   border-radius: 8px 8px 0px 0px;
   margin-bottom: -2px;
   margin-top: 3rem;
+  box-shadow: 0px -12px 0px #1a5319;
 
   &:hover {
-    border-color: #acd793;
-    box-shadow: 0px 8px 0px #acd793;
-    background-color: #e0fbe2;
+    box-shadow: 0px 12px 0px #1a5319;
   }
 `;
 const StyledFloatingLabel = styled(FloatingLabel)`
@@ -139,6 +134,7 @@ function CreateEvent() {
       let response = await axios.post(URL, body, getAuth());
       setEventData((prevData) => [...prevData, response.data.data]);
       setMessage("Event Sucessfully Created");
+
       console.log(response.data.data);
     } catch (error) {
       setError(error);
@@ -148,7 +144,7 @@ function CreateEvent() {
   function createDraft() {
     const data = getValues();
 
-    if (data) {
+    if (data && data.eventName !== "" && data.location !== "") {
       const formData = {
         id: Date.now(),
         name: data.eventName,
@@ -158,13 +154,16 @@ function CreateEvent() {
         description: data.description,
       };
       setEventData((pre) => [...pre, formData]);
-      console.log(formData.id);
+      setMessage("Event Sucessfully Created");
     }
   }
   function handleCancel() {
     navigate("/dashboard");
   }
-  if (error) return <div>{error}</div>;
+  if (error) {
+    return <div>Try again</div>;
+  }
+
   return (
     <>
       <SytledContainer>
@@ -217,13 +216,14 @@ function CreateEvent() {
           <Row className="mb-3">
             <StyledForm.Group as={Col} xs={12} md={4}>
               <StyledForm.Label>Event Name</StyledForm.Label>
-              {errors.eventName && <p>{errors.eventName.message}</p>}
+
               <StyledForm.Control
                 type="text"
                 id="eventName"
                 placeholder="Enter Event Name"
                 {...register("eventName")}
               />
+              {errors.eventName && errors.eventName.message}
             </StyledForm.Group>
             <StyledForm.Group as={Col} xs={12} md={4}>
               <StyledForm.Label>Select Event Type</StyledForm.Label>
@@ -317,33 +317,46 @@ function CreateEvent() {
             className="mb-3"
             style={{ justifyContent: "end", margin: "auto", gap: "10px" }}
           >
-            <MyButton
-              variant="primary"
-              type="submit"
-              coloronhover="#1A5319"
-              backgroundcolor="#508d4e"
-              color="#f8f8f8"
-              width="150px"
-              bordercolor="#1A5319"
-            >
-              Next
-            </MyButton>
-            <Button variant="secondary" onClick={() => createDraft()}>
-              Create Draft
-            </Button>
-
-            <MyButton
-              variant="danger"
-              type="button"
-              coloronhover="#900C3F"
-              backgroundcolor="#f8f8f8"
-              color="#900C3F"
-              width="100px"
-              bordercolor="#900C3F"
-              handleclick={handleCancel}
-            >
-              Cancel
-            </MyButton>
+            <Col>
+              {" "}
+              <MyButton
+                variant="primary"
+                type="submit"
+                coloronhover="#1A5319"
+                backgroundcolor="#508d4e"
+                color="#f8f8f8"
+                width="150px"
+                bordercolor="#1A5319"
+              >
+                Next
+              </MyButton>
+            </Col>
+            <Col>
+              {" "}
+              <Button
+                variant="warning"
+                onClick={() => createDraft()}
+                type="submit"
+                width="150px"
+              >
+                Create Draft
+              </Button>
+            </Col>
+            <Col>
+              {" "}
+              <MyButton
+                variant="danger"
+                type="button"
+                coloronhover="#900C3F"
+                backgroundcolor="#f8f8f8"
+                color="#900C3F"
+                width="100px"
+                bordercolor="#900C3F"
+                handleclick={handleCancel}
+              >
+                Cancel
+              </MyButton>
+            </Col>
           </Row>
           <Outlet />
         </StyledForm>

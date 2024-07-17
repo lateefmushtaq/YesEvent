@@ -1,19 +1,15 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import MyButton from "./buttons/CreateEventButton";
-import { Form as BootstrapForm, Container, Navbar, Nav } from "react-bootstrap";
+import { Container, Navbar, Nav } from "react-bootstrap";
 import Logout from "./Logout";
 import { useEffect, useState } from "react";
 
-const Form = styled(BootstrapForm)`
-  .form-control {
-    &:focus {
-      border-color: #508d4e;
-      box-shadow: none;
-    }
+const CustomNavbar = styled(Navbar)`
+  background-color: ${(props) => props.bgColor};
+  .nav-link {
+    color: aliceblue;
   }
 `;
-
 function NavBar() {
   const [login, setLogin] = useState("");
   const token = localStorage.getItem("Token");
@@ -23,45 +19,35 @@ function NavBar() {
   }, [token, navigate]);
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container fluid>
-        <Navbar.Brand as={Link} to="/">
-          Home
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
+    <CustomNavbar expand="lg" bgColor="#508d4e">
+      <Container>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav>
+            <Nav.Link as={Link} to={"/"}>
+              Home
+            </Nav.Link>
+            <Nav.Link as={Link} to={"/dashboard"}>
+              Dashboard
+            </Nav.Link>
+          </Nav>
           <Nav
             className="me-auto my-2 my-lg-0"
             style={{ maxHeight: "100px" }}
             navbarScroll
           ></Nav>
-          <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-1"
-              aria-label="Search"
-            />
-            <MyButton
-              width="250px"
-              variant="outline-success"
-              coloronhover="#1A5319"
-              margin="0px 10px 0 0"
-            >
-              Search Events
-            </MyButton>
-          </Form>
-          <div className="vr" />
           {login ? (
             <Nav.Link>
               <Logout />
             </Nav.Link>
           ) : (
-            <Link to="./login">Login</Link>
+            <Nav.Link as={Link} to={"/login"}>
+              Login
+            </Nav.Link>
           )}
         </Navbar.Collapse>
       </Container>
-    </Navbar>
+    </CustomNavbar>
   );
 }
 

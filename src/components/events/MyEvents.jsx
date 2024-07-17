@@ -1,18 +1,32 @@
-import Card from "react-bootstrap/Card";
+import { Col, Row, ListGroup, Container, Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contextProvider/AuthProvider";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import ListGroup from "react-bootstrap/ListGroup";
 import img from "../assets/bg.webp";
-import { Link } from "react-router-dom";
+import { Button } from "../buttons/CreateEventButton";
+import { useNavigate } from "react-router-dom";
+
+import {
+  faLocationDot,
+  faClock,
+  faSpinner,
+  faCalendarDays,
+} from "@fortawesome/free-solid-svg-icons";
+const style = {
+  backgroundColor: "#e3f6e9",
+  color: " #1a5319",
+};
+const cardStyle = {
+  backgroundColor: "#e3f6e9",
+  color: " #1a5319",
+  border: "2px solid #508d4e",
+};
 
 function Events() {
   const { eventData, setEventData } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -20,6 +34,10 @@ function Events() {
       month: "long",
       day: "numeric",
     });
+  }
+  function handleDelete(id) {
+    const updatedEvents = eventData.filter((item) => item.id !== id);
+    setEventData(updatedEvents);
   }
   useEffect(() => {
     setTimeout(() => {
@@ -33,12 +51,12 @@ function Events() {
           display: "flex",
           textAlign: "center",
           justifyContent: "center",
-          height: "100vh",
+          height: "50vh",
           alignItems: "center",
         }}
       >
         <FontAwesomeIcon
-          style={{ fontSize: "80px", color: "#1a5319" }}
+          style={{ fontSize: "50px", color: "#1a5319" }}
           icon={faSpinner}
           spin
           spinReverse
@@ -47,63 +65,83 @@ function Events() {
     );
 
   return (
-    <Row
-      xs={1}
-      md={3}
-      className="g-3"
-      style={{ margin: "20px", flexWrap: "wrap" }}
-    >
-      {eventData &&
-        eventData.map((item) => (
-          <Col key={item.id}>
-            <Card style={{ width: "24rem", overflow: "hidden" }}>
-              <Card.Img
-                style={{ width: "100%", height: "200px", objectFit: "cover" }}
-                variant="top"
-                src={img}
-              />
-              <Card.Body>
-                <Card.Title>
-                  <span> {item.name}</span>
-                </Card.Title>
-
-                <ListGroup className="list-group-flush">
-                  <ListGroup.Item>{formatDate(item.date)}</ListGroup.Item>
-                  <ListGroup.Item>
-                    {" "}
-                    <strong>Event ID: </strong>
-                    {item.id}{" "}
-                  </ListGroup.Item>
-
-                  <ListGroup.Item>
-                    <strong>Venue: </strong>
-                    {item.venue}
-                  </ListGroup.Item>
-
-                  <ListGroup.Item>
-                    {" "}
-                    <strong>Timezone: </strong>
-                    {item.description}
-                  </ListGroup.Item>
-
-                  <ListGroup.Item>
-                    <strong>Event Owner: </strong>
-                    {item.owner}
-                  </ListGroup.Item>
-                </ListGroup>
-
-                <Card.Text>{}</Card.Text>
+    <Container className="mt-4">
+      <Row md={1} style={{ justifyContent: "center" }}>
+        {eventData &&
+          eventData.map((item) => (
+            <Col className="mt-2" key={item.id} sm={12} md={4}>
+              <Card style={cardStyle}>
+                <Card.Img variant="top" src={img} />
                 <Card.Body>
-                  <Card.Link as={Link} to={"/eventDetails"}>
-                    {" "}
-                    Event Details
-                  </Card.Link>
+                  <Card.Title>
+                    <span> {item.name}</span>
+                  </Card.Title>
+
+                  <ListGroup>
+                    <ListGroup.Item style={style}>
+                      <FontAwesomeIcon
+                        icon={faCalendarDays}
+                        style={{ color: "#1a5319", marginRight: "4px" }}
+                      />
+                      {formatDate(item.date)}
+                    </ListGroup.Item>
+                    <ListGroup.Item style={style}>
+                      {" "}
+                      <strong>Event ID: </strong>
+                      {item.id}{" "}
+                    </ListGroup.Item>
+
+                    <ListGroup.Item style={style}>
+                      <FontAwesomeIcon
+                        icon={faLocationDot}
+                        style={{ color: "#1a5319", marginRight: "4px" }}
+                      />
+                      {item.venue}
+                    </ListGroup.Item>
+
+                    <ListGroup.Item style={style}>
+                      <FontAwesomeIcon
+                        icon={faClock}
+                        style={{ color: "#1a5319", marginRight: "4px" }}
+                      />
+                      {item.description}
+                    </ListGroup.Item>
+
+                    <ListGroup.Item style={style}>
+                      <strong>Event Owner: </strong>
+                      {item.owner}
+                    </ListGroup.Item>
+                  </ListGroup>
+
+                  <Card.Text>{}</Card.Text>
+                  <Card.Body>
+                    <Button
+                      onClick={() => navigate("/eventDetails")}
+                      variant="success"
+                      coloronhover="#508d4e"
+                      backgroundcolor="#80af81"
+                      bordercolor={"#508d4e"}
+                      width="100%"
+                    >
+                      {" "}
+                      Event Details
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(item.id)}
+                      variant="danger"
+                      width="100%"
+                      marginTop="24px"
+                    >
+                      {" "}
+                      Delete Event
+                    </Button>
+                  </Card.Body>
                 </Card.Body>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-    </Row>
+              </Card>
+            </Col>
+          ))}
+      </Row>
+    </Container>
   );
 }
 

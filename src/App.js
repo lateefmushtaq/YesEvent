@@ -20,7 +20,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
         <Route path="/createEvent" element={<PrivateRoute element={<CreateEvent />} />} />
-        <Route path="/createEvent" element={<PrivateRoute element={<EventDetails />} />} />
+        <Route path="/eventDetails" element={<PrivateRoute element={<EventDetails />} />} />
 
       </Routes>
     </AuthProvider >

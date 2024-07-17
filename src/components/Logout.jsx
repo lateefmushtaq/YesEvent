@@ -15,7 +15,7 @@ const Logout = () => {
       <FontAwesomeIcon
         icon={faArrowRightFromBracket}
         onClick={handleLogout}
-        style={{ marginLeft: "12px", color: "#1A5319" }}
+        style={{ marginLeft: "12px", color: "#ffffff" }}
       />
     </div>
   );
