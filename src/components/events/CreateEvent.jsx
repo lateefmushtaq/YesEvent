@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Alert from "react-bootstrap/Alert";
-import axios from "axios";
 import AuthContext from "../contextProvider/AuthProvider";
 import {
   Form,
@@ -11,8 +9,8 @@ import {
   Container as BootstrapContainer,
   Container,
 } from "react-bootstrap";
-import MyButton, { Button } from "../buttons/CreateEventButton";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import MyButton from "../buttons/CreateEventButton";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -83,69 +81,24 @@ const StyledForm = styled(Form)`
 `;
 const schema = yup.object().shape({
   eventName: yup.string().required("Name is required"),
+  location: yup.string().required("Location is required"),
+  venueType: yup.string().required("venue is required"),
 });
-const URL = `https://api.eventyay.com/v1/events`;
-function getAuth() {
-  const token = localStorage.getItem("Token");
-  const config = {
-    headers: {
-      "Content-Type": "application/vnd.api+json",
-      Authorization: `JWT ${token}`,
-    },
-  };
-  return config;
-}
+
 function CreateEvent() {
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
+    reset,
   } = useForm({ resolver: yupResolver(schema) });
   const navigate = useNavigate();
   const { setEventData } = useContext(AuthContext);
 
-  async function onSubmit(data) {
-    const body = {
-      data: {
-        type: "event",
-        attributes: {
-          name: data.eventName,
-          "starts-at": "2099-12-13T23:59:59.123456+00:00",
-          "ends-at": "2099-12-14T23:59:59.123456+00:00",
-          timezone: "UTC",
-          latitude: "1.23456789",
-          longitude: "1.23456789",
-          "location-name": data.venueData,
-          description: data.description,
-          "original-image-url":
-            "https://www.w3schools.com/html/pic_mountain.jpg",
-          "owner-name": "example",
-          privacy: "public",
-          state: "draft",
-          online: false,
-          published: true,
-        },
-      },
-    };
-
-    try {
-      let response = await axios.post(URL, body, getAuth());
-      setEventData((prevData) => [...prevData, response.data.data]);
-      setMessage("Event Sucessfully Created");
-
-      console.log(response.data.data);
-    } catch (error) {
-      setError(error);
-    }
-  }
-
-  function createDraft() {
-    const data = getValues();
-
-    if (data && data.eventName !== "" && data.location !== "") {
+  function onSubmit(data) {
+    if (data) {
       const formData = {
         id: Date.now(),
         name: data.eventName,
@@ -155,14 +108,14 @@ function CreateEvent() {
         description: data.description,
       };
       setEventData((pre) => [...pre, formData]);
-      setMessage("Event Sucessfully Created");
+
+      setMessage(true);
+      reset();
     }
   }
+
   function handleCancel() {
     navigate("/dashboard");
-  }
-  if (error) {
-    return <div>Try again</div>;
   }
 
   return (
@@ -188,7 +141,7 @@ function CreateEvent() {
 
       <StyledContainerMain>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          {message !== "" && (
+          {message !== false && (
             <MyAlert
               variant={"success"}
               icon={
@@ -198,15 +151,7 @@ function CreateEvent() {
                   style={{ marginRight: "12px" }}
                 />
               }
-              Message={
-                <span>
-                  {message}
-                  <Alert.Link as={Link} to="/dashboard">
-                    {" "}
-                    Your Event
-                  </Alert.Link>
-                </span>
-              }
+              Message={"hello"}
               backgroundColor={"#80af81"}
               color={"#fff"}
               border={"#508d4e"}
@@ -233,6 +178,7 @@ function CreateEvent() {
                 id="eventType"
                 {...register("eventType")}
               >
+                {errors.eventName && errors.eventName.message}
                 <option value="" disabled>
                   Event Type
                 </option>
@@ -325,19 +271,10 @@ function CreateEvent() {
                 width="100%"
                 bordercolor="#1A5319"
               >
-                Next
+                Create Event
               </MyButton>
             </Col>
-            <Col className="mb-4" xs={12} md="auto">
-              <Button
-                variant="warning"
-                onClick={() => createDraft()}
-                type="submit"
-                style={{ width: "100%" }}
-              >
-                Create Draft
-              </Button>
-            </Col>
+
             <Col className="mb-4" xs={12} md="auto">
               <MyButton
                 variant="danger"

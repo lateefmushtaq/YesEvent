@@ -7,10 +7,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { Col, Row, ListGroup, Container, Card } from "react-bootstrap";
-import { Button } from "../buttons/CreateEventButton";
 import img from "../assets/bg.webp";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const style = {
   backgroundColor: "#e3f6e9",
@@ -30,7 +28,6 @@ function truncateString(inputString, maxLength) {
   }
 }
 function Events() {
-  const navigate = useNavigate();
   const [publicEvent, setPublicEvents] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -165,20 +162,6 @@ function Events() {
                         : "Unknown"}
                     </ListGroup.Item>
                   </ListGroup>
-
-                  <Card.Body>
-                    <Button
-                      onClick={() => navigate("/eventDetails")}
-                      variant="success"
-                      coloronhover="#508d4e"
-                      backgroundcolor="#80af81"
-                      bordercolor={"#508d4e"}
-                      width="100%"
-                    >
-                      {" "}
-                      Event Details
-                    </Button>
-                  </Card.Body>
                 </Card.Body>
               </Card>
             </Col>

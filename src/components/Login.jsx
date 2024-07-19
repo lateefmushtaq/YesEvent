@@ -18,12 +18,12 @@ import {
   Container as BootstrapContainer,
   Row,
   Col,
+  Container,
 } from "react-bootstrap";
 import MyAlert from "./Alerts";
 
 const Form = styled(BootstrapForm)`
-  margin: 20px;
-
+  margin: 2rem;
   .form-control {
     border: 2px solid transparent;
     padding: 10px;
@@ -41,17 +41,14 @@ const Link = styled(FooterLink)`
   color: #508d4e;
   text-decoration: underline;
   font-weight: bold;
-  display: block;
   text-align: center;
   margin-top: 1rem;
 `;
 
-const Container = styled(BootstrapContainer)`
+const SytledContainer = styled(BootstrapContainer)`
   background-color: #d6efd8;
   margin-top: 2rem;
-  margin-bottom: 1rem;
   padding: 12px 8px;
-  width: 500px;
   border: 2px solid #508d4e;
   border-radius: 8px;
 `;
@@ -121,59 +118,77 @@ function MyForm() {
   function onSubmit(data) {
     login(data);
   }
-  const icon = <FontAwesomeIcon icon={faRightToBracket} />;
+
   return (
     <Container>
-      {error === 401 ? (
-        <MyAlert Message={error} icon={iconError} variant={"danger"} />
-      ) : null}
+      {" "}
+      <SytledContainer>
+        {error === 401 ? (
+          <MyAlert Message={error} icon={iconError} variant={"danger"} />
+        ) : null}
 
-      <Row>
-        <Col xs={12}>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Heading1> {icon} Login</Heading1>
-            <Form.Group className="mb-3">
-              <Form.Label> Email address</Form.Label>
+        <Row>
+          <Col xs={12}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              <Heading1>
+                {" "}
+                <FontAwesomeIcon icon={faRightToBracket} /> Login
+              </Heading1>
+              <Form.Group className="mb-3">
+                <Form.Label> Email address</Form.Label>
 
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                {...register("email")}
-              />
-              <Form.Text id="error">{errors.email?.message}</Form.Text>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label> Password</Form.Label>
-              <div style={{ position: "relative" }}>
                 <Form.Control
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  {...register("password")}
+                  type="email"
+                  placeholder="Enter email"
+                  {...register("email")}
                 />
-                <div
-                  onClick={togglePasswordVisibility}
-                  style={{
-                    position: "absolute",
-                    right: "10px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    cursor: "pointer",
-                  }}
-                >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                <Form.Text id="error">{errors.email?.message}</Form.Text>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label> Password</Form.Label>
+                <div style={{ position: "relative" }}>
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    {...register("password")}
+                  />
+                  <div
+                    onClick={togglePasswordVisibility}
+                    style={{
+                      position: "absolute",
+                      right: "10px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </div>
                 </div>
-              </div>
-              <Form.Text id="error">{errors.password?.message}</Form.Text>
-            </Form.Group>
+                <Form.Text id="error">{errors.password?.message}</Form.Text>
+              </Form.Group>
 
-            <Button type="submit"> {icon} Submit</Button>
-          </Form>
-          <Col style={{ textAlign: "center" }}>
-            {" "}
-            <Link to="/register">Create a New Account</Link>
+              <Button
+                type="submit"
+                variant="primary"
+                coloronhover="#1A5319"
+                backgroundcolor="#508d4e"
+                color="#f8f8f8"
+                width="100%"
+                bordercolor="#1A5319"
+              >
+                {" "}
+                <FontAwesomeIcon icon={faRightToBracket} />
+                Submit
+              </Button>
+            </Form>
+            <Col style={{ textAlign: "center" }}>
+              {" "}
+              <Link to="/register">Create a New Account</Link>
+            </Col>
           </Col>
-        </Col>
-      </Row>
+        </Row>
+      </SytledContainer>
     </Container>
   );
 }

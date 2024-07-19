@@ -25,6 +25,7 @@ const cardStyle = {
 
 function Events() {
   const { eventData, setEventData } = useContext(AuthContext);
+
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   function formatDate(dateString) {
@@ -116,7 +117,7 @@ function Events() {
                   <Card.Text>{}</Card.Text>
                   <Card.Body>
                     <Button
-                      onClick={() => navigate("/eventDetails")}
+                      onClick={() => navigate(`/eventDetails/${item.id}`)}
                       variant="success"
                       coloronhover="#508d4e"
                       backgroundcolor="#80af81"

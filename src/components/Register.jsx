@@ -15,6 +15,7 @@ import {
   Container as BootstrapContainer,
   Row,
   Col,
+  Container,
 } from "react-bootstrap";
 import MyAlert from "./Alerts";
 import MyButton from "./buttons/CreateEventButton";
@@ -28,7 +29,6 @@ const Link = styled(FooterLink)`
   color: #508d4e;
   text-decoration: underline;
   font-weight: bold;
-  display: block;
   text-align: center;
   margin-top: 1rem;
 `;
@@ -50,12 +50,11 @@ const Form = styled(BootstrapForm)`
   }
 `;
 
-const Container = styled(BootstrapContainer)`
+const StyledContainer = styled(BootstrapContainer)`
   background-color: #d6efd8;
   margin-top: 2rem;
   margin-bottom: 1rem;
   padding: 12px 8px;
-  width: 500px;
   border: 2px solid #508d4e;
   border-radius: 8px;
 `;
@@ -88,57 +87,73 @@ function MyForm() {
   const icon = <FontAwesomeIcon icon={faUserPlus} />;
   return (
     <Container>
-      {error ? (
-        <MyAlert
-          Message={`User Already exists. Please Login `}
-          icon={iconError}
-          backgroundcolor={"#ee4e4e"}
-          color={"#fff"}
-          border={"#f5c6cb"}
-        />
-      ) : null}
+      {" "}
+      <StyledContainer>
+        {error ? (
+          <MyAlert
+            Message={`User Already exists. Please Login `}
+            icon={iconError}
+            backgroundcolor={"#ee4e4e"}
+            color={"#fff"}
+            border={"#f5c6cb"}
+          />
+        ) : null}
 
-      <Row>
-        <Col xs={12}>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Heading1> {icon} Signup</Heading1>
-            <Form.Group className="mb-3">
-              <Form.Label> Email address</Form.Label>
+        <Row>
+          <Col xs={12}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              <Heading1> {icon} Signup</Heading1>
+              <Form.Group className="mb-3">
+                <Form.Label> Email address</Form.Label>
 
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                {...register("email")}
-              />
-              <Form.Text id="error">{errors.email?.message}</Form.Text>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label> Password</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  {...register("email")}
+                />
+                <Form.Text id="error">{errors.email?.message}</Form.Text>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label> Password</Form.Label>
 
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                {...register("password")}
-              />
-              <Form.Text id="error">{errors.password?.message}</Form.Text>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label> Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  {...register("password")}
+                />
+                <Form.Text id="error">{errors.password?.message}</Form.Text>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label> Password</Form.Label>
 
-              <Form.Control
-                type="password"
-                placeholder=" Repeat Password"
-                {...register("passwordRepeat")}
-              />
-              <Form.Text id="error">{errors.passwordRepeat?.message}</Form.Text>
-            </Form.Group>
-            <MyButton variant="primary" type="submit">
-              {icon} Register
-            </MyButton>
-            <Link to="/login">Login</Link>
-          </Form>
-        </Col>
-      </Row>
+                <Form.Control
+                  type="password"
+                  placeholder=" Repeat Password"
+                  {...register("passwordRepeat")}
+                />
+                <Form.Text id="error">
+                  {errors.passwordRepeat?.message}
+                </Form.Text>
+              </Form.Group>
+              <MyButton
+                variant="primary"
+                type="submit"
+                coloronhover="#1A5319"
+                backgroundcolor="#508d4e"
+                color="#f8f8f8"
+                width="100%"
+                bordercolor="#1A5319"
+              >
+                {icon} Register
+              </MyButton>
+            </Form>
+            <Col style={{ textAlign: "center" }}>
+              {" "}
+              <Link to="/login">Login</Link>
+            </Col>
+          </Col>
+        </Row>
+      </StyledContainer>
     </Container>
   );
 }
