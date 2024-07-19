@@ -27,7 +27,7 @@ function NavBar() {
             <Nav.Link as={Link} to={"/"}>
               Home
             </Nav.Link>
-            <Nav.Link as={Link} to={"/dashboard"}>
+            <Nav.Link as={Link} to={token ? "/dashboard" : "/login"}>
               Dashboard
             </Nav.Link>
           </Nav>
