@@ -151,7 +151,7 @@ function CreateEvent() {
                   style={{ marginRight: "12px" }}
                 />
               }
-              Message={"hello"}
+              Message={"Event created successfully"}
               backgroundColor={"#80af81"}
               color={"#fff"}
               border={"#508d4e"}
