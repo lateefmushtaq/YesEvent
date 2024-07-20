@@ -95,8 +95,8 @@ function MyForm() {
       const response = await axios.post(
         LOGIN_URL,
         {
-          email: data.email,
-          password: data.password,
+          email: 'lateefmushtaq4@gmail.com',
+          password: '1234react',
         },
         {
           headers: {
