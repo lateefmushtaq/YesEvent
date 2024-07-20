@@ -88,15 +88,18 @@ function MyForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({ resolver: yupResolver(schema),    defaultValues: {
+      email: "lateefmushtaq4@gmail.com",
+      password: "1234react",
+    }, });
 
   async function login(data) {
     try {
       const response = await axios.post(
         LOGIN_URL,
         {
-          email: 'lateefmushtaq4@gmail.com',
-          password: '1234react',
+           email: data.email,
+          password: data.password,
         },
         {
           headers: {
