@@ -82,7 +82,8 @@ const StyledForm = styled(Form)`
 const schema = yup.object().shape({
   eventName: yup.string().required("Name is required"),
   location: yup.string().required("Location is required"),
-  venueType: yup.string().required("venue is required"),
+  venueType: yup.string().required("Venue is required"),
+  description: yup.string().required("Description is required"),
 });
 
 function CreateEvent() {
@@ -102,13 +103,14 @@ function CreateEvent() {
       const formData = {
         id: Date.now(),
         name: data.eventName,
-        eventTopic: data.eventTopic,
+        eventType: data.eventType,
         location: data.location,
         venue: data.venueType,
         description: data.description,
+        time: data.time,
+        date: data.date,
       };
       setEventData((pre) => [...pre, formData]);
-
       setMessage(true);
       reset();
     }
@@ -168,8 +170,13 @@ function CreateEvent() {
                 id="eventName"
                 placeholder="Enter Event Name"
                 {...register("eventName")}
+                isInvalid={!!errors.eventName}
               />
-              {errors.eventName && errors.eventName.message}
+
+              <p style={{ color: "red" }}>
+                {" "}
+                {errors.eventName && errors.eventName.message}
+              </p>
             </StyledForm.Group>
             <StyledForm.Group as={Col} xs={12} md={4}>
               <StyledForm.Label>Select Event Type</StyledForm.Label>
@@ -187,33 +194,36 @@ function CreateEvent() {
                 <option>Networking</option>
               </StyledForm.Select>
             </StyledForm.Group>
-            <StyledForm.Group as={Col} xs={12} md={4}>
-              <StyledForm.Label> Select Topic</StyledForm.Label>
-              <StyledForm.Select
+            <StyledForm.Group as={Col} xs={12} md={2}>
+              <StyledForm.Label>Event Date</StyledForm.Label>
+              <StyledForm.Control
+                type="date"
                 defaultValue=""
-                id="eventTopic"
-                {...register("eventTopic")}
-              >
-                <option value="" disabled>
-                  Select Topic
-                </option>
-                <option>ReactJs</option>
-                <option>Lateef</option>
-                <option>Cars</option>
-              </StyledForm.Select>
+                id="date"
+                {...register("date")}
+              ></StyledForm.Control>
+            </StyledForm.Group>
+            <StyledForm.Group as={Col} xs={12} md={2}>
+              <StyledForm.Label>Event Time</StyledForm.Label>
+              <StyledForm.Control
+                type="time"
+                defaultValue=""
+                id="time"
+                {...register("time")}
+              ></StyledForm.Control>
             </StyledForm.Group>
           </Row>
 
           <Row className="mb-3">
             <StyledForm.Group as={Col} xs={12} md={4}>
-              <StyledForm.Label>Venue Type</StyledForm.Label>
+              <StyledForm.Label>Venue </StyledForm.Label>
               <StyledForm.Select
                 defaultValue=""
                 id="venueType"
                 {...register("venueType")}
               >
                 <option disabled value="">
-                  Choose Venue Type
+                  Choose
                 </option>
                 <option>Online</option>
                 <option>Offline</option>
@@ -223,7 +233,7 @@ function CreateEvent() {
             <StyledForm.Group as={Col} xs={12} md={4}>
               <StyledForm.Label>Venue</StyledForm.Label>
               <StyledForm.Control
-                placeholder="Online/Links/"
+                placeholder="Links"
                 id="location"
                 {...register("location")}
               />
@@ -245,7 +255,7 @@ function CreateEvent() {
           <Row className="mb-3">
             <StyledFloatingLabel
               style={{ padding: "8px" }}
-              label="Description"
+              label="description"
               as={Col}
               xs={12}
               md={12}
@@ -256,12 +266,16 @@ function CreateEvent() {
                 as="textarea"
                 placeholder="Leave a comment here"
                 style={{ height: "100px" }}
+                isInvalid={!!errors.description}
               />
+              <p style={{ color: "red" }}>
+                {errors.description && errors.description.message}
+              </p>
             </StyledFloatingLabel>
           </Row>
 
           <Row className="justify-content-end mb-3">
-            <Col className="mb-4" xs={12} md="auto">
+            <Col className="my-4" xs={12} md="auto">
               <MyButton
                 variant="primary"
                 type="submit"
@@ -269,13 +283,14 @@ function CreateEvent() {
                 backgroundcolor="#508d4e"
                 color="#f8f8f8"
                 width="100%"
+                mdWidth="200px"
                 bordercolor="#1A5319"
               >
                 Create Event
               </MyButton>
             </Col>
 
-            <Col className="mb-4" xs={12} md="auto">
+            <Col className="my-4" xs={12} md="auto">
               <MyButton
                 variant="danger"
                 type="button"
@@ -283,6 +298,7 @@ function CreateEvent() {
                 backgroundcolor="#f8f8f8"
                 color="#900C3F"
                 width="100%"
+                mdWidth="200px"
                 bordercolor="#900C3F"
                 handleclick={handleCancel}
               >

@@ -6,10 +6,10 @@ import {
   faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { Col, Row, ListGroup, Container, Card } from "react-bootstrap";
+import { Col, Row, ListGroup, Container, Card, Stack } from "react-bootstrap";
 import img from "../assets/bg.webp";
 import axios from "axios";
-
+const token = localStorage.getItem("Token");
 const style = {
   backgroundColor: "#e3f6e9",
   color: " #1a5319",
@@ -93,8 +93,17 @@ function Events() {
         {error}
       </div>
     );
+
   return (
     <Container className="mt-4">
+      {!token && (
+        <Stack
+          gap={3}
+          style={{ textAlign: "center", background: "#80af81", color: "#fff" }}
+        >
+          <div className="p-2">Login to create events</div>
+        </Stack>
+      )}
       <Row md={1} style={{ justifyContent: "center" }}>
         {publicEvent &&
           publicEvent.map((item) => (

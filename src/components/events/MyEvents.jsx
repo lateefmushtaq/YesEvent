@@ -16,6 +16,9 @@ import {
 const style = {
   backgroundColor: "#e3f6e9",
   color: " #1a5319",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "start",
 };
 const cardStyle = {
   backgroundColor: "#e3f6e9",
@@ -82,35 +85,42 @@ function Events() {
                     <ListGroup.Item style={style}>
                       <FontAwesomeIcon
                         icon={faCalendarDays}
-                        style={{ color: "#1a5319", marginRight: "4px" }}
+                        style={{ color: "#1a5319", marginRight: "8px" }}
                       />
-                      {formatDate(item.date)}
-                    </ListGroup.Item>
-                    <ListGroup.Item style={style}>
-                      {" "}
-                      <strong>Event ID: </strong>
-                      {item.id}{" "}
-                    </ListGroup.Item>
-
-                    <ListGroup.Item style={style}>
-                      <FontAwesomeIcon
-                        icon={faLocationDot}
-                        style={{ color: "#1a5319", marginRight: "4px" }}
-                      />
-                      {item.venue}
-                    </ListGroup.Item>
-
-                    <ListGroup.Item style={style}>
+                      {item.date ? formatDate(item.date) : "Not Specified"}
                       <FontAwesomeIcon
                         icon={faClock}
-                        style={{ color: "#1a5319", marginRight: "4px" }}
+                        style={{
+                          color: "#1a5319",
+                          marginRight: "8px",
+                          marginLeft: "12px",
+                        }}
                       />
-                      {item.description}
+                      {item.time ? item.time : "Not Specified"}
                     </ListGroup.Item>
 
                     <ListGroup.Item style={style}>
-                      <strong>Event Owner: </strong>
-                      {item.owner}
+                      <p>
+                        {" "}
+                        <FontAwesomeIcon
+                          icon={faLocationDot}
+                          style={{ color: "#1a5319", marginRight: "4px" }}
+                        />{" "}
+                        {item.venue},
+                      </p>
+                      <p style={{ marginLeft: "4px" }}> {item.location}</p>
+                    </ListGroup.Item>
+
+                    {item.eventType ? (
+                      <ListGroup.Item style={style}>
+                        {item.eventType}
+                      </ListGroup.Item>
+                    ) : (
+                      ""
+                    )}
+
+                    <ListGroup.Item style={style}>
+                      {item.description.substring(0, 80) + "......"}
                     </ListGroup.Item>
                   </ListGroup>
 

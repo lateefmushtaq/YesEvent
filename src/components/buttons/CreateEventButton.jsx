@@ -9,6 +9,7 @@ export const Button = styled(BootstrapButton)`
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
   gap: 10px;
   margin: ${(props) => props.margin};
   margin-top: ${(props) => props.marginTop};
